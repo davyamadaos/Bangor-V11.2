@@ -13,17 +13,24 @@ const TOP_LEVEL = 100.15;
 const BOTTOM_LEVEL = 98.90;
 
 function toGauge(level) {
+
     return (
         16.921 * level
         - 1675.7
     );
 }
 
-function forecast(level, rateCmHr, hours) {
+function forecast(
+    level,
+    rateCmHr,
+    hours
+) {
 
     return (
-        level +
-        (rateCmHr / 100) * hours
+        level
+        +
+        (rateCmHr / 100)
+        * hours
     );
 }
 
@@ -65,17 +72,15 @@ async function run() {
         epaLevel.toFixed(3)
     );
 
-    /*
-      Temporary trend estimate.
-
-      This will later be calculated
-      from historical data.
-    */
-
     const rateCmHr = 0;
 
     const estimatedLevel =
         epaLevel;
+
+    const gaugeLevel =
+        toGauge(
+            estimatedLevel
+        );
 
     const now =
         new Date();
@@ -95,6 +100,11 @@ async function run() {
                 estimatedLevel.toFixed(3)
             ),
 
+        gaugeLevel:
+            Number(
+                gaugeLevel.toFixed(2)
+            ),
+
         ageHours: 0,
 
         rate:
@@ -103,6 +113,7 @@ async function run() {
         forecast: {
 
             "1h": {
+
                 level:
                     Number(
                         forecast(
@@ -114,6 +125,7 @@ async function run() {
             },
 
             "3h": {
+
                 level:
                     Number(
                         forecast(
@@ -125,6 +137,7 @@ async function run() {
             },
 
             "6h": {
+
                 level:
                     Number(
                         forecast(
@@ -161,9 +174,7 @@ async function run() {
 
     console.log(
         "Gauge:",
-        toGauge(
-            estimatedLevel
-        ).toFixed(2)
+        gaugeLevel.toFixed(2)
     );
 
     console.log(
@@ -176,4 +187,5 @@ run().catch(err => {
     console.error(err);
 
     process.exit(1);
+
 });
