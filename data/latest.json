@@ -1,1 +1,34 @@
-{}
+{
+  "updated": "2026-06-24T12:15:00Z",
+
+  "epaLevel": 99.45,
+  "epaGauge": 7.41,
+
+  "estimatedLevel": 99.57,
+  "estimatedGauge": 9.44,
+
+  "ageHours": 2.0,
+
+  "rate": 8.0,
+
+  "trend": "rising",
+
+  "forecast": {
+    "1h": {
+      "level": 99.64,
+      "gauge": 10.62
+    },
+
+    "3h": {
+      "level": 99.78,
+      "gauge": 12.99
+    },
+
+    "6h": {
+      "level": 99.86,
+      "gauge": 14.34
+    }
+  },
+
+  "series": []
+}
