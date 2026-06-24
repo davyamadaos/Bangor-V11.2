@@ -1,25 +1,25 @@
 {
-  "updated": "2026-06-24T17:34:11.038Z",
-  "epaLevel": 100.132,
-  "estimatedLevel": 100.132,
-  "gaugeLevel": 18.63,
+  "updated": "2026-06-24T18:15:55.880Z",
+  "epaLevel": 98.903,
+  "estimatedLevel": 98.903,
+  "gaugeLevel": -2.16,
   "ageHours": 0,
   "rate": 0,
   "forecast": {
     "1h": {
-      "level": 100.132
+      "level": 98.903
     },
     "3h": {
-      "level": 100.132
+      "level": 98.903
     },
     "6h": {
-      "level": 100.132
+      "level": 98.903
     }
   },
   "series": [
     {
-      "time": "2026-06-24T17:34:11.038Z",
-      "level": 100.132
+      "time": "2026-06-24T18:15:55.880Z",
+      "level": 98.903
     }
   ]
 }
