@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Bangor River Level</title>
+
+    <meta name="theme-color" content="#0d47a1">
+
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+    <h1>Bangor River Level</h1>
+</header>
+
+<main class="container">
+
+    <!-- STATUS CARD -->
+
+    <section class="card" id="summaryCard">
+
+        <h2>Current Estimate</h2>
+
+        <div id="currentLevel"
+             class="current-level">
+            --.-- m
+        </div>
+
+        <div id="currentGauge"
+             class="current-gauge">
+            Gauge --
+        </div>
+
+        <hr>
+
+        <div class="section-title">
+            EPA
+        </div>
+
+        <div id="epaLevel">
+            --.-- m
+        </div>
+
+        <div id="epaGauge">
+            Gauge --
+        </div>
+
+        <div id="epaAge">
+            --
+        </div>
+
+        <hr>
+
+        <div id="trend"
+             class="steady">
+            ■ Steady
+        </div>
+
+        <hr>
+
+        <div class="forecast-title">
+            Forecast
+        </div>
+
+        <table class="forecast-table">
+
+            <tr>
+                <td>+1 h</td>
+                <td id="f1Level">--</td>
+                <td id="f1Gauge">--</td>
+            </tr>
+
+            <tr>
+                <td>+3 h</td>
+                <td id="f3Level">--</td>
+                <td id="f3Gauge">--</td>
+            </tr>
+
+            <tr>
+                <td>+6 h</td>
+                <td id="f6Level">--</td>
+                <td id="f6Gauge">--</td>
+            </tr>
+
+        </table>
+
+        <div class="updated">
+            Updated:
+            <span id="updatedTime">--</span>
+        </div>
+
+    </section>
+
+    <!-- PERIOD BUTTONS -->
+
+    <section class="card">
+
+        <div class="period-buttons">
+
+            <button class="active"
+                    data-hours="6">
+                6h
+            </button>
+
+            <button data-hours="12">
+                12h
+            </button>
+
+            <button data-hours="24">
+                24h
+            </button>
+
+            <button data-hours="48">
+                48h
+            </button>
+
+            <button data-hours="72">
+                3d
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- RECONSTRUCTED CHART -->
+
+    <section class="card">
+
+        <h2>River Level</h2>
+
+        <canvas id="riverChart"></canvas>
+
+    </section>
+
+    <!-- EPA PNG -->
+
+    <section class="card">
+
+        <h2>EPA Chart</h2>
+
+        <img id="epaImage"
+             src=""
+             alt="EPA River Level Chart">
+
+    </section>
+
+</main>
+
+<script type="module"
+        src="js/app.js">
+</script>
+
+</body>
+
+</html>
