@@ -1,23 +1,17 @@
-export const CALIBRATION = {
+export const PLOT = {
 
-    // pixel position of known reference points
-    yTop: 80,
-    yBottom: 520,
+    left: 65,
+    right: 672,
 
-    // real EPA values at those points
-    levelTop: 100.0,
-    levelBottom: 98.0
+    top: 24,
+    bottom: 435
 };
 
-export function pixelToLevel(y) {
+export const SEARCH = {
 
-    const ratio =
-        (y - CALIBRATION.yTop)
-        / (CALIBRATION.yBottom - CALIBRATION.yTop);
+    blueThreshold: 20,
 
-    return (
-        CALIBRATION.levelTop
-        + ratio *
-        (CALIBRATION.levelBottom - CALIBRATION.levelTop)
-    );
-}
+    rightMargin: 8,
+
+    maxBacktrack: 80
+};
