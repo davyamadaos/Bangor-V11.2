@@ -19,7 +19,7 @@ export function render(data) {
         "currentGauge"
     ).textContent =
         "Gauge " +
-        estimatedGauge.toFixed(2);
+        estimatedGauge.toFixed(1);
 
     document.getElementById(
         "epaLevel"
@@ -30,7 +30,7 @@ export function render(data) {
         "epaGauge"
     ).textContent =
         "Gauge " +
-        epaGauge.toFixed(2);
+        epaGauge.toFixed(1);
 
     document.getElementById(
         "epaAge"
