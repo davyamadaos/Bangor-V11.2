@@ -1,15 +1,8 @@
 export async function loadData() {
 
-    const response = await fetch(
-        "data/latest.json?t=" +
-        Date.now()
-    );
+    const r = await fetch("data/latest.json?t=" + Date.now());
 
-    if (!response.ok) {
-        throw new Error(
-            "Unable to load data."
-        );
-    }
+    if (!r.ok) throw new Error("Load failed");
 
-    return await response.json();
+    return await r.json();
 }
