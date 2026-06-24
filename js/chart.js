@@ -10,16 +10,14 @@ export function draw(canvas, data) {
         chart.destroy();
     }
 
-    const riverData =
-        data.series.map(p => ({
-            x: new Date(p.time),
-            y: p.level
-        }));
+    const river = data.series.map(p => ({
+        x: new Date(p.time),
+        y: p.level
+    }));
 
-    const now =
-        new Date();
+    const now = new Date();
 
-    const forecastData = [
+    const forecast = [
 
         {
             x: now,
@@ -57,9 +55,9 @@ export function draw(canvas, data) {
             datasets: [
 
                 {
-                    label: "EPA",
+                    label: "River",
 
-                    data: riverData,
+                    data: river,
 
                     borderColor: "#1565c0",
 
@@ -73,11 +71,11 @@ export function draw(canvas, data) {
                 {
                     label: "Forecast",
 
-                    data: forecastData,
+                    data: forecast,
 
                     borderColor: "#ff9800",
 
-                    borderDash: [5, 5],
+                    borderDash: [5,5],
 
                     borderWidth: 2,
 
