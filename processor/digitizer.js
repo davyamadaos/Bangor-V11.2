@@ -27,15 +27,11 @@ export async function extractLatest() {
                 resolveWithObject: true
             });
 
-    const width =
-        info.width;
-
-    let latestX = null;
-    let latestY = null;
+    const width = info.width;
 
     for (
         let x = RIGHT;
-        x >= RIGHT - 60;
+        x >= RIGHT - 80;
         x--
     ) {
 
@@ -51,37 +47,37 @@ export async function extractLatest() {
                 (y * width + x) * 3;
 
             const r = data[i];
-
             const g = data[i + 1];
-
             const b = data[i + 2];
 
             if (
-                b > 120 &&
-                b > r + 25 &&
-                b > g + 25
+                b > 140 &&
+                b > r + 30 &&
+                b > g + 30
             ) {
                 ys.push(y);
             }
         }
 
-        if (ys.length > 0) {
+        // Ignore isolated blue pixels.
 
-            latestX = x;
+        if (ys.length >= 6) {
 
             ys.sort((a, b) => a - b);
 
-latestY =
-    ys[Math.floor(ys.length / 2)];
+            const y =
+                ys[Math.floor(
+                    ys.length / 2 in
+                )];
 
-            break;
+            return {
+                x,
+                y
+            };
         }
     }
 
-    return {
-
-        x: latestX,
-
-        y: latestY
-    };
+    throw new Error(
+        "No river trace found"
+    );
 }
