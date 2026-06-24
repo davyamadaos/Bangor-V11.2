@@ -1,71 +1,22 @@
-export function computeForecast(series) {
+export function forecast(series) {
 
-    const n = series.length;
+    if (series.length < 5) return null;
 
-    if (n < 12) {
+    const a = series.at(-1);
+    const b = series.at(-5);
 
-        return null;
-    }
+    const dt = (new Date(a.time) - new Date(b.time)) / 3600000;
+    const rate = (a.level - b.level) / dt;
 
-    const latest =
-        series[n - 1];
+    const nowLag = (Date.now() - new Date(a.time)) / 3600000;
 
-    const previous =
-        series[
-            Math.max(0, n - 9)
-        ];
-
-    const hours =
-
-        (new Date(latest.time)
-        - new Date(previous.time))
-
-        / 3600000;
-
-    const rateMhr =
-
-        (latest.level
-        - previous.level)
-
-        / hours;
-
-    const rateCmHr =
-        rateMhr * 100;
-
-    const ageHours =
-
-        (Date.now()
-        - new Date(latest.time))
-
-        / 3600000;
-
-    const estimated =
-
-        latest.level
-        + (rateMhr * ageHours);
+    const current = a.level + rate * nowLag;
 
     return {
-
-        epaLevel:
-            latest.level,
-
-        estimatedLevel:
-            estimated,
-
-        rateCmHr,
-
-        ageHours,
-
-        plus1:
-            estimated
-            + rateMhr,
-
-        plus3:
-            estimated
-            + rateMhr * 3,
-
-        plus6:
-            estimated
-            + rateMhr * 6
+        current,
+        rateCmHr: rate * 100,
+        plus1: current + rate,
+        plus3: current + rate * 3,
+        plus6: current + rate * 6
     };
 }
