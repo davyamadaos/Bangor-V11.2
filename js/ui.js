@@ -13,7 +13,9 @@ export function render(data) {
     document.getElementById(
         "currentLevel"
     ).textContent =
-        fmtLevel(data.estimatedLevel);
+        fmtLevel(
+            data.estimatedLevel
+        );
 
     document.getElementById(
         "currentGauge"
@@ -24,7 +26,9 @@ export function render(data) {
     document.getElementById(
         "epaLevel"
     ).textContent =
-        fmtLevel(data.epaLevel);
+        fmtLevel(
+            data.epaLevel
+        );
 
     document.getElementById(
         "epaGauge"
@@ -52,56 +56,64 @@ export function render(data) {
     trendEl.className =
         t.class;
 
-    document.getElementById(
-        "f1Level"
-    ).textContent =
-        fmtLevel(
-            data.forecast["1h"].level
-        );
+    if (data.forecast) {
 
-    document.getElementById(
-        "f1Gauge"
-    ).textContent =
-        "Gauge " +
-        toGauge(
-            data.forecast["1h"].level
-        ).toFixed(2);
+        const f1 =
+            data.forecast["1h"]?.level ??
+            data.estimatedLevel;
 
-    document.getElementById(
-        "f3Level"
-    ).textContent =
-        fmtLevel(
-            data.forecast["3h"].level
-        );
+        const f3 =
+            data.forecast["3h"]?.level ??
+            data.estimatedLevel;
 
-    document.getElementById(
-        "f3Gauge"
-    ).textContent =
-        "Gauge " +
-        toGauge(
-            data.forecast["3h"].level
-        ).toFixed(2);
+        const f6 =
+            data.forecast["6h"]?.level ??
+            data.estimatedLevel;
 
-    document.getElementById(
-        "f6Level"
-    ).textContent =
-        fmtLevel(
-            data.forecast["6h"].level
-        );
+        document.getElementById(
+            "f1Level"
+        ).textContent =
+            fmtLevel(f1);
 
-    document.getElementById(
-        "f6Gauge"
-    ).textContent =
-        "Gauge " +
-        toGauge(
-            data.forecast["6h"].level
-        ).toFixed(2);
+        document.getElementById(
+            "f1Gauge"
+        ).textContent =
+            "Gauge " +
+            toGauge(f1)
+                .toFixed(1);
+
+        document.getElementById(
+            "f3Level"
+        ).textContent =
+            fmtLevel(f3);
+
+        document.getElementById(
+            "f3Gauge"
+        ).textContent =
+            "Gauge " +
+            toGauge(f3)
+                .toFixed(1);
+
+        document.getElementById(
+            "f6Level"
+        ).textContent =
+            fmtLevel(f6);
+
+        document.getElementById(
+            "f6Gauge"
+        ).textContent =
+            "Gauge " +
+            toGauge(f6)
+                .toFixed(1);
+    }
 
     if (data.updated) {
 
         document.getElementById(
             "updatedTime"
         ).textContent =
-            fmtTime(data.updated);
+            fmtTime(
+                data.updated
+            );
     }
 }
