@@ -6,10 +6,31 @@ import { extractLatest }
 import { levelFromPixel }
     from "./scale.js";
 
-const topLevel = 99.20;
-const bottomLevel = 98.95;
+const TOP_PIXEL = 24;
+const BOTTOM_PIXEL = 435;
+
+const TOP_LEVEL = 100.15;
+const BOTTOM_LEVEL = 98.90;
+
+function toGauge(level) {
+    return (
+        16.921 * level
+        - 1675.7
+    );
+}
+
+function forecast(level, rateCmHr, hours) {
+
+    return (
+        level
+        +
+        (rateCmHr / 100) * hours
+    );
+}
 
 async function run() {
+
+    console.log("Starting processor...");
 
     const latest =
         await extractLatest();
@@ -27,10 +48,10 @@ async function run() {
     const epaLevel =
         levelFromPixel(
             latest.y,
-            24,
-            435,
-            topLevel,
-            bottomLevel
+            TOP_PIXEL,
+            BOTTOM_PIXEL,
+            TOP_LEVEL,
+            BOTTOM_LEVEL
         );
 
     console.log(
@@ -38,41 +59,94 @@ async function run() {
         epaLevel.toFixed(3)
     );
 
+    /*
+      Temporary trend estimate.
+
+      Later this will come from
+      historical levels.
+    */
+
+    const rateCmHr = 0;
+
+    const estimatedLevel =
+        epaLevel;
+
     const now =
-        new Date().toISOString();
+        new Date();
 
-    const data = {
+    const output = {
 
-        updated: now,
+        updated:
+            now.toISOString(),
 
-        epaLevel: epaLevel,
+        epaLevel:
+            Number(
+                epaLevel.toFixed(3)
+            ),
 
-        estimatedLevel: epaLevel,
+        estimatedLevel:
+            Number(
+                estimatedLevel.toFixed(3)
+            ),
+
+        gaugeLevel:
+            Number(
+                toGauge(
+                    estimatedLevel
+                ).toFixed(2)
+            ),
 
         ageHours: 0,
 
-        rate: 2,
+        rate:
+            rateCmHr,
 
         forecast: {
 
             "1h": {
-                level: epaLevel
+                level:
+                    Number(
+                        forecast(
+                            estimatedLevel,
+                            rateCmHr,
+                            1
+                        ).toFixed(3)
+                    )
             },
 
             "3h": {
-                level: epaLevel
+                level:
+                    Number(
+                        forecast(
+                            estimatedLevel,
+                            rateCmHr,
+                            3
+                        ).toFixed(3)
+                    )
             },
 
             "6h": {
-                level: epaLevel
+                level:
+                    Number(
+                        forecast(
+                            estimatedLevel,
+                            rateCmHr,
+                            6
+                        ).toFixed(3)
+                    )
             }
         },
 
         series: [
 
             {
-                time: now,
-                level: epaLevel
+                time:
+                    now.toISOString(),
+
+                level:
+                    Number(
+                        estimatedLevel.toFixed(3)
+                    )
             }
         ]
     };
@@ -80,11 +154,25 @@ async function run() {
     fs.writeFileSync(
         "../data/latest.json",
         JSON.stringify(
-            data,
+            output,
             null,
             2
         )
     );
+
+    console.log(
+        "Gauge:",
+        output.gaugeLevel
+    );
+
+    console.log(
+        "JSON updated."
+    );
 }
 
-run();
+run().catch(err => {
+
+    console.error(err);
+
+    process.exit(1);
+});
