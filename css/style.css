@@ -2,9 +2,10 @@ body {
     margin: 0;
     padding: 0;
     background: #f3f5f7;
-    font-family: -apple-system,
-                 BlinkMacSystemFont,
-                 sans-serif;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
 }
 
 .header {
@@ -91,6 +92,15 @@ canvas {
     height: 260px !important;
 }
 
+#chart {
+    height: 260px !important;
+}
+
+#tideChart {
+    width: 100% !important;
+    height: 260px !important;
+}
+
 #epaImage {
     width: 100%;
     border-radius: 8px;
@@ -121,38 +131,22 @@ canvas {
     margin-bottom: 15px;
 }
 
-#tideChart {
-    width: 100% !important;
-    height: 220px !important;
-}
 .tideLabels {
-
     margin-top: 15px;
-
-    font-size: 0.85rem;
-
-    color: #555;
-
     display: grid;
-
     grid-template-columns: 1fr 1fr;
-
     gap: 8px;
+    font-size: 0.85rem;
+    color: #555;
 }
 
 .tideSource {
-
     margin-top: 15px;
-
-    font-size: 0.75rem;
-
-    color: #777;
-
     text-align: center;
-
+    font-size: 0.75rem;
+    color: #777;
     line-height: 1.4;
 }
-
 
 @media (max-width: 600px) {
 
@@ -165,43 +159,11 @@ canvas {
         font-size: 0.9rem;
     }
 
-    canvas {
+    #chart {
         height: 220px !important;
     }
 
     #tideChart {
-        height: 200px !important;
+        height: 220px !important;
     }
-    #tideChart {
-    width: 100% !important;
-    height: 260px !important;
-}
-
-.tideLabels {
-
-    margin-top: 15px;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 8px;
-
-    font-size: 0.85rem;
-
-    color: #555;
-}
-
-.tideSource {
-
-    margin-top: 15px;
-
-    text-align: center;
-
-    font-size: 0.75rem;
-
-    color: #777;
-
-    line-height: 1.4;
-}
 }
