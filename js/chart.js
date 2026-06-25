@@ -1,145 +1,232 @@
-let tideChart;
+let riverChart;
 
-export function drawTide(
+export function draw(
     canvas,
-    tide
+    data
 ) {
 
-    if (tideChart) {
-        tideChart.destroy();
+    if (riverChart) {
+        riverChart.destroy();
     }
 
-    const points = [];
+    const riverSeries =
+        (data.series || []).map(p => ({
+
+            x: new Date(
+                p.time
+            ),
+
+            y: p.level
+        }));
+
+    const forecastSeries = [];
+
+    const now = new Date();
 
     if (
-        tide.previousLowTime &&
-        tide.previousLowLevel != null
+        data.forecast &&
+        data.forecast["1h"]
     ) {
-        points.push({
+
+        forecastSeries.push({
+
+            x: now,
+
+            y: data.estimatedLevel
+
+        });
+
+        forecastSeries.push({
+
             x: new Date(
-                tide.previousLowTime
+                now.getTime()
+                + 3600000
             ),
-            y: tide.previousLowLevel
+
+            y: data.forecast["1h"].level
+
+        });
+
+        forecastSeries.push({
+
+            x: new Date(
+                now.getTime()
+                + 10800000
+            ),
+
+            y: data.forecast["3h"].level
+
+        });
+
+        forecastSeries.push({
+
+            x: new Date(
+                now.getTime()
+                + 21600000
+            ),
+
+            y: data.forecast["6h"].level
+
         });
     }
 
-    if (
-        tide.previousHighTime &&
-        tide.previousHighLevel != null
-    ) {
-        points.push({
-            x: new Date(
-                tide.previousHighTime
-            ),
-            y: tide.previousHighLevel
-        });
-    }
+    const allLevels = [
 
-    if (
-        tide.nextLowTime &&
-        tide.nextLowLevel != null
-    ) {
-        points.push({
-            x: new Date(
-                tide.nextLowTime
-            ),
-            y: tide.nextLowLevel
-        });
-    }
+        ...riverSeries.map(
+            p => p.y
+        ),
 
-    if (
-        tide.nextHighTime &&
-        tide.nextHighLevel != null
-    ) {
-        points.push({
-            x: new Date(
-                tide.nextHighTime
-            ),
-            y: tide.nextHighLevel
-        });
-    }
+        ...forecastSeries.map(
+            p => p.y
+        )
 
-    tideChart = new Chart(canvas, {
+    ];
 
-        type: "line",
+    const minLevel =
+        allLevels.length
+            ? Math.min(...allLevels) - 0.05
+            : 98.9;
 
-        data: {
+    const maxLevel =
+        allLevels.length
+            ? Math.max(...allLevels) + 0.05
+            : 100.1;
 
-            datasets: [
+    riverChart = new Chart(
+        canvas,
+        {
 
-                {
-                    label: "Tide",
+            type: "line",
 
-                    data: points,
+            data: {
 
-                    borderColor: "#1565c0",
+                datasets: [
 
-                    tension: 0.45,
+                    {
+                        label:
+                            "River Level",
 
-                    pointRadius: 5,
+                        data:
+                            riverSeries,
 
-                    fill: false
-                },
+                        borderColor:
+                            "#1565c0",
 
-                {
-                    label: "Now",
+                        backgroundColor:
+                            "rgba(21,101,192,0.15)",
 
-                    data: [
+                        fill: true,
 
-                        {
-                            x: new Date(),
-                            y: tide.currentLevel
-                        }
+                        tension: 0.3,
 
-                    ],
+                        pointRadius: 0,
 
-                    pointRadius: 7,
+                        borderWidth: 2
+                    },
 
-                    pointBackgroundColor:
-                        "black",
+                    {
+                        label:
+                            "Forecast",
 
-                    pointBorderColor:
-                        "black",
+                        data:
+                            forecastSeries,
 
-                    showLine: false
-                }
-            ]
-        },
+                        borderColor:
+                            "#ff9800",
 
-        options: {
+                        borderDash:
+                            [6, 6],
 
-            responsive: true,
+                        pointRadius:
+                            3,
 
-            maintainAspectRatio: false,
+                        fill: false,
 
-            plugins: {
+                        tension: 0.3
+                    },
 
-                legend: {
-                    display: false
-                }
+                    {
+                        label:
+                            "Current",
+
+                        data: [
+
+                            {
+                                x: now,
+                                y: data.estimatedLevel
+                            }
+
+                        ],
+
+                        pointRadius: 6,
+
+                        pointBackgroundColor:
+                            "black",
+
+                        pointBorderColor:
+                            "black",
+
+                        showLine: false
+                    }
+                ]
             },
 
-            scales: {
+            options: {
 
-                x: {
+                responsive: true,
 
-                    type: "time",
+                maintainAspectRatio:
+                    false,
 
-                    time: {
-                        unit: "hour"
+                interaction: {
+
+                    intersect: false,
+
+                    mode: "index"
+                },
+
+                plugins: {
+
+                    legend: {
+
+                        display: true
                     }
                 },
 
-                y: {
+                scales: {
 
-                    title: {
+                    x: {
 
-                        display: true,
+                        type: "time",
 
-                        text: "m ODM"
+                        time: {
+
+                            unit: "hour"
+                        },
+
+                        title: {
+
+                            display: true,
+
+                            text: "Time"
+                        }
+                    },
+
+                    y: {
+
+                        min: minLevel,
+
+                        max: maxLevel,
+
+                        title: {
+
+                            display: true,
+
+                            text: "EPA Level (m)"
+                        }
                     }
                 }
             }
         }
-    });
+    );
 }
