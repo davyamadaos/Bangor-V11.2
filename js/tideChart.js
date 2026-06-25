@@ -2,15 +2,47 @@ let tideChart;
 
 export function drawTide(
     canvas,
-    series,
-    current
+    tide
 ) {
 
-    if (tideChart)
+    if (tideChart) {
         tideChart.destroy();
+    }
 
-    tideChart =
-        new Chart(canvas, {
+    const points = [
+
+        {
+            x: new Date(
+                tide.previousLowTime
+            ),
+            y: tide.previousLowLevel
+        },
+
+        {
+            x: new Date(
+                tide.previousHighTime
+            ),
+            y: tide.previousHighLevel
+        },
+
+        {
+            x: new Date(
+                tide.nextHighTime
+            ),
+            y: tide.nextHighLevel
+        },
+
+        {
+            x: new Date(
+                tide.nextLowTime
+            ),
+            y: tide.nextLowLevel
+        }
+    ];
+
+    tideChart = new Chart(
+        canvas,
+        {
 
             type: "line",
 
@@ -21,73 +53,91 @@ export function drawTide(
                     {
                         label: "Tide",
 
-                        data:
-                            series.map(
-                                p => ({
-                                    x:
-                                        new Date(
-                                            p.time
-                                        ),
-                                    y:
-                                        p.level
-                                })
-                            ),
+                        data: points,
 
                         borderColor:
-                            "#0088cc",
+                            "#0077cc",
 
-                        tension: 0.4,
+                        tension: 0.45,
 
-                        pointRadius: 0
+                        pointRadius: 5
                     },
 
                     {
-                        label:
-                            "Now",
+                        label: "Now",
 
                         data: [
-                            {
-                                x:
-                                    new Date(),
 
-                                y:
-                                    current
+                            {
+                                x: new Date(),
+                                y: tide.currentLevel
                             }
                         ],
 
-                        pointRadius: 6,
+                        pointRadius: 7,
 
-                        showLine:
-                            false
+                        pointBackgroundColor:
+                            "black",
+
+                        pointBorderColor:
+                            "black",
+
+                        showLine: false
                     }
                 ]
             },
 
             options: {
 
-                responsive:
-                    true,
+                responsive: true,
 
                 maintainAspectRatio:
                     false,
 
+                plugins: {
+
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label(context) {
+
+                                return (
+                                    context.parsed.y
+                                    .toFixed(2)
+                                    + " m"
+                                );
+                            }
+                        }
+                    }
+                },
+
                 scales: {
 
                     x: {
-                        type:
-                            "time"
+
+                        type: "time",
+
+                        time: {
+                            unit: "hour"
+                        }
                     },
 
                     y: {
-                        title: {
-                            display:
-                                true,
 
-                            text:
-                                "m ODM"
+                        title: {
+
+                            display: true,
+
+                            text: "m ODM"
                         }
                     }
                 }
             }
-        });
+        }
+    );
 }
