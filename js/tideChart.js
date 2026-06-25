@@ -9,135 +9,137 @@ export function drawTide(
         tideChart.destroy();
     }
 
-    const points = [
+    const points = [];
 
-        {
+    if (
+        tide.previousLowTime &&
+        tide.previousLowLevel != null
+    ) {
+        points.push({
             x: new Date(
                 tide.previousLowTime
             ),
             y: tide.previousLowLevel
-        },
+        });
+    }
 
-        {
+    if (
+        tide.previousHighTime &&
+        tide.previousHighLevel != null
+    ) {
+        points.push({
             x: new Date(
                 tide.previousHighTime
             ),
             y: tide.previousHighLevel
-        },
+        });
+    }
 
-        {
-            x: new Date(
-                tide.nextHighTime
-            ),
-            y: tide.nextHighLevel
-        },
-
-        {
+    if (
+        tide.nextLowTime &&
+        tide.nextLowLevel != null
+    ) {
+        points.push({
             x: new Date(
                 tide.nextLowTime
             ),
             y: tide.nextLowLevel
-        }
-    ];
+        });
+    }
 
-    tideChart = new Chart(
-        canvas,
-        {
+    if (
+        tide.nextHighTime &&
+        tide.nextHighLevel != null
+    ) {
+        points.push({
+            x: new Date(
+                tide.nextHighTime
+            ),
+            y: tide.nextHighLevel
+        });
+    }
 
-            type: "line",
+    tideChart = new Chart(canvas, {
 
-            data: {
+        type: "line",
 
-                datasets: [
+        data: {
 
-                    {
-                        label: "Tide",
+            datasets: [
 
-                        data: points,
+                {
+                    label: "Tide",
 
-                        borderColor:
-                            "#0077cc",
+                    data: points,
 
-                        tension: 0.45,
+                    borderColor: "#1565c0",
 
-                        pointRadius: 5
-                    },
+                    tension: 0.45,
 
-                    {
-                        label: "Now",
+                    pointRadius: 5,
 
-                        data: [
+                    fill: false
+                },
 
-                            {
-                                x: new Date(),
-                                y: tide.currentLevel
-                            }
-                        ],
+                {
+                    label: "Now",
 
-                        pointRadius: 7,
+                    data: [
 
-                        pointBackgroundColor:
-                            "black",
+                        {
+                            x: new Date(),
+                            y: tide.currentLevel
+                        }
 
-                        pointBorderColor:
-                            "black",
+                    ],
 
-                        showLine: false
-                    }
-                ]
+                    pointRadius: 7,
+
+                    pointBackgroundColor:
+                        "black",
+
+                    pointBorderColor:
+                        "black",
+
+                    showLine: false
+                }
+            ]
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
             },
 
-            options: {
+            scales: {
 
-                responsive: true,
+                x: {
 
-                maintainAspectRatio:
-                    false,
+                    type: "time",
 
-                plugins: {
-
-                    legend: {
-                        display: false
-                    },
-
-                    tooltip: {
-
-                        callbacks: {
-
-                            label(context) {
-
-                                return (
-                                    context.parsed.y
-                                    .toFixed(2)
-                                    + " m"
-                                );
-                            }
-                        }
+                    time: {
+                        unit: "hour"
                     }
                 },
 
-                scales: {
+                y: {
 
-                    x: {
+                    title: {
 
-                        type: "time",
+                        display: true,
 
-                        time: {
-                            unit: "hour"
-                        }
-                    },
-
-                    y: {
-
-                        title: {
-
-                            display: true,
-
-                            text: "m ODM"
-                        }
+                        text: "m ODM"
                     }
                 }
             }
         }
-    );
+    });
 }
