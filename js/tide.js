@@ -6,5 +6,11 @@ export async function loadTides() {
             + Date.now()
         );
 
+    if (!response.ok) {
+        throw new Error(
+            "Tide load failed"
+        );
+    }
+
     return await response.json();
 }
