@@ -125,6 +125,33 @@ canvas {
     width: 100% !important;
     height: 220px !important;
 }
+.tideLabels {
+
+    margin-top: 15px;
+
+    font-size: 0.85rem;
+
+    color: #555;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+.tideSource {
+
+    margin-top: 15px;
+
+    font-size: 0.75rem;
+
+    color: #777;
+
+    text-align: center;
+
+    line-height: 1.4;
+}
 
 @media (max-width: 600px) {
 
