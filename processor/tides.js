@@ -19,41 +19,71 @@ function localTime(date) {
         );
 }
 
+function isHigh(type) {
+
+    const t =
+        String(type)
+        .toLowerCase();
+
+    return (
+        t.includes("high") ||
+        t === "hw"
+    );
+}
+
+function isLow(type) {
+
+    const t =
+        String(type)
+        .toLowerCase();
+
+    return (
+        t.includes("low") ||
+        t === "lw"
+    );
+}
+
 async function run() {
+
+    console.log(
+        "Downloading tide events..."
+    );
 
     const events =
         await axios.get(
             EVENTS_URL
         );
 
+    console.log(
+        "Downloading tide series..."
+    );
+
     const series =
         await axios.get(
             SERIES_URL
         );
 
-    const now =
-        Date.now();
-
     const rows =
         events.data.table.rows;
+
+    console.log(
+        "Events:",
+        rows.length
+    );
 
     const tides =
         rows.map(r => {
 
-            const t =
+            const corrected =
                 new Date(
-                    r[1]
+                    new Date(r[1]).getTime()
+                    + 3600000
                 );
-
-            t.setHours(
-                t.getHours()
-                + 1
-            );
 
             return {
 
                 time:
-                    t,
+                    corrected,
 
                 type:
                     r[4],
@@ -63,26 +93,38 @@ async function run() {
             };
         });
 
+    console.log(
+        "Categories:"
+    );
+
+    tides.forEach(t => {
+        console.log(t.type);
+    });
+
+    const now =
+        Date.now();
+
     const previous =
         tides.filter(
             t =>
-                t.time
+                t.time.getTime()
                 < now
         );
 
     const future =
         tides.filter(
             t =>
-                t.time
-                > now
+                t.time.getTime()
+                >= now
         );
 
     const previousLow =
         previous
             .filter(
                 t =>
-                    t.type
-                    === "Low"
+                    isLow(
+                        t.type
+                    )
             )
             .slice(-1)[0];
 
@@ -90,55 +132,91 @@ async function run() {
         previous
             .filter(
                 t =>
-                    t.type
-                    === "High"
+                    isHigh(
+                        t.type
+                    )
             )
             .slice(-1)[0];
 
     const nextHigh =
         future.find(
             t =>
-                t.type
-                === "High"
+                isHigh(
+                    t.type
+                )
         );
 
     const nextLow =
         future.find(
             t =>
-                t.type
-                === "Low"
+                isLow(
+                    t.type
+                )
         );
+
+    console.log(
+        "Previous Low:",
+        previousLow?.type
+    );
+
+    console.log(
+        "Previous High:",
+        previousHigh?.type
+    );
+
+    console.log(
+        "Next High:",
+        nextHigh?.type
+    );
+
+    console.log(
+        "Next Low:",
+        nextLow?.type
+    );
 
     const output = {
 
+        updated:
+            new Date()
+                .toISOString(),
+
         state:
+            nextHigh &&
+            nextLow &&
             nextHigh.time
-            < nextLow.time
+                < nextLow.time
             ? "▲ Flood"
             : "▼ Ebb",
 
-        currentLevel:
-            0,
+        currentLevel: 0,
 
         previousLow:
-            localTime(
+            previousLow
+            ? localTime(
                 previousLow.time
-            ),
+              )
+            : "--",
 
         previousHigh:
-            localTime(
+            previousHigh
+            ? localTime(
                 previousHigh.time
-            ),
+              )
+            : "--",
 
         nextHigh:
-            localTime(
+            nextHigh
+            ? localTime(
                 nextHigh.time
-            ),
+              )
+            : "--",
 
         nextLow:
-            localTime(
+            nextLow
+            ? localTime(
                 nextLow.time
-            ),
+              )
+            : "--",
 
         series:
             series.data.table.rows.map(
@@ -146,8 +224,9 @@ async function run() {
 
                     time:
                         new Date(
-                            new Date(r[0])
-                            .getTime()
+                            new Date(
+                                r[0]
+                            ).getTime()
                             + 3600000
                         ),
 
@@ -171,4 +250,10 @@ async function run() {
     );
 }
 
-run();
+run().catch(err => {
+
+    console.error(err);
+
+    process.exit(1);
+
+});
