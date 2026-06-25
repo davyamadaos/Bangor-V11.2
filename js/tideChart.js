@@ -19,7 +19,8 @@ export function drawTide(
             x: new Date(
                 tide.previousLowTime
             ),
-            y: tide.previousLowLevel
+            y: tide.previousLowLevel,
+            label: "Prev Low"
         });
     }
 
@@ -31,19 +32,8 @@ export function drawTide(
             x: new Date(
                 tide.previousHighTime
             ),
-            y: tide.previousHighLevel
-        });
-    }
-
-    if (
-        tide.nextLowTime &&
-        tide.nextLowLevel != null
-    ) {
-        points.push({
-            x: new Date(
-                tide.nextLowTime
-            ),
-            y: tide.nextLowLevel
+            y: tide.previousHighLevel,
+            label: "Prev High"
         });
     }
 
@@ -55,114 +45,199 @@ export function drawTide(
             x: new Date(
                 tide.nextHighTime
             ),
-            y: tide.nextHighLevel
+            y: tide.nextHighLevel,
+            label: "Next High"
         });
     }
 
-    console.log("Tide points:", points);
-
-    if (points.length === 0) {
-
-        console.error(
-            "No tide points found."
-        );
-
-        return;
+    if (
+        tide.nextLowTime &&
+        tide.nextLowLevel != null
+    ) {
+        points.push({
+            x: new Date(
+                tide.nextLowTime
+            ),
+            y: tide.nextLowLevel,
+            label: "Next Low"
+        });
     }
 
-    tideChart = new Chart(
-        canvas,
-        {
+    points.sort(
+        (a, b) => a.x - b.x
+    );
 
-            type: "line",
+    const nowPoint = {
 
-            data: {
+        x: new Date(),
 
-                datasets: [
+        y: tide.currentLevel
+    };
 
-                    {
-                        label: "Tide",
+    tideChart = new Chart(canvas, {
 
-                        data: points,
+        type: "line",
 
-                        borderColor:
-                            "#1565c0",
+        data: {
 
-                        backgroundColor:
-                            "rgba(21,101,192,0.1)",
+            datasets: [
 
-                        tension: 0.45,
+                {
+                    label: "Tide",
 
-                        pointRadius: 5,
+                    data: points,
 
-                        borderWidth: 3,
+                    borderColor: "#1565c0",
 
-                        fill: false
-                    },
+                    backgroundColor:
+                        "#1565c0",
 
-                    {
-                        label: "Now",
+                    borderWidth: 3,
 
-                        data: [
+                    tension: 0.45,
 
-                            {
-                                x: new Date(),
-                                y:
-                                    tide.currentLevel
-                            }
+                    pointRadius: 6,
 
-                        ],
+                    pointHoverRadius: 6,
 
-                        pointRadius: 7,
+                    fill: false
+                },
 
-                        pointBackgroundColor:
-                            "black",
+                {
+                    label: "Now",
 
-                        pointBorderColor:
-                            "black",
+                    data: [nowPoint],
 
-                        showLine: false
-                    }
-                ]
+                    showLine: false,
+
+                    pointRadius: 8,
+
+                    pointHoverRadius: 8,
+
+                    pointBackgroundColor:
+                        "red",
+
+                    pointBorderColor:
+                        "red"
+                }
+            ]
+        },
+
+        plugins: [
+
+            {
+                id: "pointLabels",
+
+                afterDatasetsDraw(chart) {
+
+                    const ctx = chart.ctx;
+
+                    ctx.save();
+
+                    ctx.font =
+                        "12px sans-serif";
+
+                    ctx.textAlign =
+                        "center";
+
+                    ctx.fillStyle =
+                        "#1565c0";
+
+                    chart
+                        .getDatasetMeta(0)
+                        .data
+                        .forEach((point, i) => {
+
+                            const p =
+                                points[i];
+
+                            ctx.fillText(
+                                p.label,
+                                point.x,
+                                point.y - 42
+                            );
+
+                            ctx.fillText(
+                                p.x.toLocaleString(
+                                    "en-IE",
+                                    {
+                                        day: "numeric",
+                                        month: "short",
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    }
+                                ),
+                                point.x,
+                                point.y - 26
+                            );
+
+                            ctx.fillText(
+                                p.y.toFixed(2)
+                                + " m",
+                                point.x,
+                                point.y - 10
+                            );
+                        });
+
+                    const now =
+                        chart
+                        .getDatasetMeta(1)
+                        .data[0];
+
+                    ctx.fillStyle =
+                        "red";
+
+                    ctx.fillText(
+                        "Now",
+                        now.x,
+                        now.y - 20
+                    );
+
+                    ctx.restore();
+                }
+            }
+        ],
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
             },
 
-            options: {
+            scales: {
 
-                responsive: true,
+                x: {
 
-                maintainAspectRatio:
-                    false,
+                    type: "time",
 
-                plugins: {
+                    time: {
 
-                    legend: {
-                        display: false
+                        unit: "hour",
+
+                        displayFormats: {
+
+                            hour: "HH:mm"
+                        }
                     }
                 },
 
-                scales: {
+                y: {
 
-                    x: {
+                    title: {
 
-                        type: "time",
+                        display: true,
 
-                        time: {
-
-                            unit: "hour"
-                        }
-                    },
-
-                    y: {
-
-                        title: {
-
-                            display: true,
-
-                            text: "m ODM"
-                        }
+                        text: "m ODM"
                     }
                 }
             }
         }
-    );
+    });
 }
