@@ -1,22 +1,23 @@
 body {
     margin: 0;
-    font-family: Arial;
-    background: #f4f6f8;
-    color: #111;
+    padding: 0;
+    background: #f3f5f7;
+    font-family: -apple-system,
+                 BlinkMacSystemFont,
+                 sans-serif;
 }
 
 .header {
     background: #0d47a1;
     color: white;
-    padding: 14px;
-    font-size: 18px;
+    padding: 18px;
     text-align: center;
-    position: sticky;
-    top: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 700px;
     margin: auto;
     padding: 10px;
 }
@@ -25,24 +26,27 @@ body {
     background: white;
     border-radius: 12px;
     padding: 16px;
-    margin: 10px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 14px;
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.1);
 }
 
 .big {
-    font-size: 48px;
+    font-size: 2.2rem;
     font-weight: bold;
     text-align: center;
 }
 
 .sub {
     text-align: center;
-    font-size: 22px;
+    color: #666;
+    margin-top: 6px;
 }
 
 .label {
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    color: #444;
 }
 
 .table {
@@ -51,40 +55,93 @@ body {
 }
 
 .table td {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
+    padding: 8px 4px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.updated {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
 }
 
 .buttons {
     display: flex;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 6px;
 }
 
 .buttons button {
     flex: 1;
-    padding: 12px;
-    border: 0;
+    padding: 10px;
+    border: none;
     border-radius: 8px;
-    background: #ddd;
-    font-weight: bold;
+    background: #e0e0e0;
+    font-size: 1rem;
 }
 
 .buttons button.active {
-    background: #0d47a1;
+    background: #1565c0;
     color: white;
 }
 
-.rising { color: green; font-weight: bold; }
-.falling { color: red; font-weight: bold; }
-.steady { color: black; font-weight: bold; }
-
-.updated {
-    font-size: 12px;
-    color: #666;
-    margin-top: 10px;
+canvas {
+    width: 100% !important;
+    height: 260px !important;
 }
 
 #epaImage {
     width: 100%;
     border-radius: 8px;
+}
+
+.rising {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+}
+
+.falling {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+.steady {
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+#tideState {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#tideChart {
+    width: 100% !important;
+    height: 220px !important;
+}
+
+@media (max-width: 600px) {
+
+    .big {
+        font-size: 1.9rem;
+    }
+
+    .buttons button {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    canvas {
+        height: 220px !important;
+    }
+
+    #tideChart {
+        height: 200px !important;
+    }
 }
