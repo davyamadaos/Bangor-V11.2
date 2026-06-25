@@ -1,6 +1,12 @@
 {
   "name": "river-processor",
+  "version": "1.1.0",
+  "description": "Bangor River and Tide Processor",
   "type": "module",
+  "scripts": {
+    "river": "node process.js",
+    "tides": "node tides.js"
+  },
   "dependencies": {
     "axios": "^1.7.0",
     "sharp": "^0.33.0",
