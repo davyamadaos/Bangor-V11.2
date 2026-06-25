@@ -3,127 +3,277 @@ Bangor V11.2 with tides
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Bangor River Level</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0d47a1">
+    <title>
+        Bangor River Level
+    </title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link
+        rel="manifest"
+        href="manifest.json">
+
+    <meta
+        name="theme-color"
+        content="#0d47a1">
+
+    <link
+        rel="stylesheet"
+        href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
 </head>
 
 <body>
 
 <header class="header">
+
     Bangor River Level
+
 </header>
 
 <main class="container">
 
-    <!-- CARD -->
+    <!-- RIVER CARD -->
+
     <section class="card">
 
-        <div class="big" id="currentLevel">--.-- m</div>
-        <div class="sub" id="currentGauge">Gauge --</div>
+        <div
+            class="big"
+            id="currentLevel">
+
+            --.-- m
+
+        </div>
+
+        <div
+            class="sub"
+            id="currentGauge">
+
+            Gauge --
+
+        </div>
 
         <hr>
 
-        <div class="label">EPA</div>
-        <div id="epaLevel">--</div>
-        <div id="epaGauge">--</div>
-        <div id="epaAge">--</div>
+        <div class="label">
+
+            EPA
+
+        </div>
+
+        <div id="epaLevel">
+
+            --
+
+        </div>
+
+        <div id="epaGauge">
+
+            --
+
+        </div>
+
+        <div id="epaAge">
+
+            --
+
+        </div>
 
         <hr>
 
-        <div id="trend" class="steady">■ Steady</div>
+        <div
+            id="trend"
+            class="steady">
+
+            ■ Steady
+
+        </div>
 
         <hr>
 
-        <div class="label">Forecast</div>
+        <div class="label">
+
+            Forecast
+
+        </div>
 
         <table class="table">
-            <tr><td>+1h</td><td id="f1Level"></td><td id="f1Gauge"></td></tr>
-            <tr><td>+3h</td><td id="f3Level"></td><td id="f3Gauge"></td></tr>
-            <tr><td>+6h</td><td id="f6Level"></td><td id="f6Gauge"></td></tr>
+
+            <tr>
+                <td>+1h</td>
+                <td id="f1Level"></td>
+                <td id="f1Gauge"></td>
+            </tr>
+
+            <tr>
+                <td>+3h</td>
+                <td id="f3Level"></td>
+                <td id="f3Gauge"></td>
+            </tr>
+
+            <tr>
+                <td>+6h</td>
+                <td id="f6Level"></td>
+                <td id="f6Gauge"></td>
+            </tr>
+
         </table>
 
-        <div class="updated">Updated: <span id="updatedTime"></span></div>
+        <div class="updated">
+
+            Updated:
+            <span id="updatedTime"></span>
+
+        </div>
 
     </section>
 
-    <!-- PERIOD BUTTONS -->
+    <!-- TIME PERIOD BUTTONS -->
+
     <section class="card buttons">
 
-        <button data-h="6" class="active">6h</button>
-        <button data-h="12">12h</button>
-        <button data-h="24">24h</button>
-        <button data-h="48">48h</button>
-        <button data-h="72">3d</button>
+        <button
+            data-h="6"
+            class="active">
+
+            6h
+
+        </button>
+
+        <button data-h="12">
+
+            12h
+
+        </button>
+
+        <button data-h="24">
+
+            24h
+
+        </button>
+
+        <button data-h="48">
+
+            48h
+
+        </button>
+
+        <button data-h="72">
+
+            3d
+
+        </button>
 
     </section>
 
-    <!-- CHART -->
+    <!-- RIVER CHART -->
+
     <section class="card">
+
         <canvas id="chart"></canvas>
+
     </section>
 
-    <!-- EPA IMAGE -->
+    <!-- EPA CHART IMAGE -->
+
     <section class="card">
-        <img id="epaImage" />
+
+        <img
+            id="epaImage"
+            alt="EPA River Chart">
+
     </section>
 
-<!-- TIDE CARD -->
+    <!-- TIDE STATE -->
 
-<section class="card">
+    <section class="card">
 
-    <div class="label">
-        Tide State
-    </div>
+        <div class="label">
 
-    <div class="big" id="tideState">
-        --
-    </div>
+            Tide State
 
-    <table class="table">
+        </div>
 
-        <tr>
-            <td>Previous Low</td>
-            <td id="prevLow"></td>
-        </tr>
+        <div
+            class="big"
+            id="tideState">
 
-        <tr>
-            <td>Previous High</td>
-            <td id="prevHigh"></td>
-        </tr>
+            --
 
-        <tr>
-            <td>Next High</td>
-            <td id="nextHigh"></td>
-        </tr>
+        </div>
 
-        <tr>
-            <td>Next Low</td>
-            <td id="nextLow"></td>
-        </tr>
+        <table class="table">
 
-    </table>
+            <tr>
+                <td>Previous Low</td>
+                <td id="prevLow"></td>
+            </tr>
 
-</section>
+            <tr>
+                <td>Previous High</td>
+                <td id="prevHigh"></td>
+            </tr>
 
-<section class="card">
+            <tr>
+                <td>Next High</td>
+                <td id="nextHigh"></td>
+            </tr>
 
-    <canvas id="tideChart"></canvas>
+            <tr>
+                <td>Next Low</td>
+                <td id="nextLow"></td>
+            </tr>
 
-</section>
-    
+        </table>
+
+    </section>
+
+    <!-- TIDE CHART -->
+
+    <section class="card">
+
+        <canvas id="tideChart"></canvas>
+
+        <div class="tideLabels">
+
+            <div id="labelPrevLow"></div>
+
+            <div id="labelPrevHigh"></div>
+
+            <div id="labelNextHigh"></div>
+
+            <div id="labelNextLow"></div>
+
+        </div>
+
+        <div class="tideSource">
+
+            Source: Marine Institute Ballyglass tide predictions.
+
+            <br>
+
+            Times adjusted +1 hour for Blacksod Bay.
+
+        </div>
+
+    </section>
+
 </main>
 
-<script type="module" src="js/app.js"></script>
+<script
+    type="module"
+    src="js/app.js">
+</script>
 
 </body>
+
 </html>
