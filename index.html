@@ -195,77 +195,73 @@ Bangor V11.2 with tides
 
     <!-- TIDE STATE -->
 
-    <section class="card">
+<section class="card">
 
-        <div class="label">
+    <div class="label">
+        Tide State
+    </div>
 
-            Tide State
+    <div
+        class="big"
+        id="tideState">
 
-        </div>
+        --
+    </div>
 
-        <div
-            class="big"
-            id="tideState">
+    <table class="table">
 
-            --
+        <tr>
+            <td>Previous Low</td>
+            <td id="prevLow"></td>
+        </tr>
 
-        </div>
+        <tr>
+            <td>Previous High</td>
+            <td id="prevHigh"></td>
+        </tr>
 
-        <table class="table">
+        <tr>
+            <td>Next Low</td>
+            <td id="nextLow"></td>
+        </tr>
 
-            <tr>
-                <td>Previous Low</td>
-                <td id="prevLow"></td>
-            </tr>
+        <tr>
+            <td>Next High</td>
+            <td id="nextHigh"></td>
+        </tr>
 
-            <tr>
-                <td>Previous High</td>
-                <td id="prevHigh"></td>
-            </tr>
+    </table>
 
-            <tr>
-                <td>Next High</td>
-                <td id="nextHigh"></td>
-            </tr>
+</section>
 
-            <tr>
-                <td>Next Low</td>
-                <td id="nextLow"></td>
-            </tr>
+<section class="card">
 
-        </table>
+    <canvas id="tideChart"></canvas>
 
-    </section>
+    <div class="tideLabels">
 
-    <!-- TIDE CHART -->
+        <div id="labelPrevLow"></div>
 
-    <section class="card">
+        <div id="labelPrevHigh"></div>
 
-        <canvas id="tideChart"></canvas>
+        <div id="labelNextLow"></div>
 
-        <div class="tideLabels">
+        <div id="labelNextHigh"></div>
 
-            <div id="labelPrevLow"></div>
+    </div>
 
-            <div id="labelPrevHigh"></div>
+    <div class="tideSource">
 
-            <div id="labelNextHigh"></div>
+        Source: Marine Institute Ballyglass tide predictions.
 
-            <div id="labelNextLow"></div>
+        <br>
 
-        </div>
+        Times adjusted +1 hour for Blacksod Bay.
 
-        <div class="tideSource">
+    </div>
 
-            Source: Marine Institute Ballyglass tide predictions.
-
-            <br>
-
-            Times adjusted +1 hour for Blacksod Bay.
-
-        </div>
-
-    </section>
+</section>
+    
 
 </main>
 
