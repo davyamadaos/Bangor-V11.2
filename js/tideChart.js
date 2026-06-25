@@ -59,87 +59,110 @@ export function drawTide(
         });
     }
 
-    tideChart = new Chart(canvas, {
+    console.log("Tide points:", points);
 
-        type: "line",
+    if (points.length === 0) {
 
-        data: {
+        console.error(
+            "No tide points found."
+        );
 
-            datasets: [
+        return;
+    }
 
-                {
-                    label: "Tide",
+    tideChart = new Chart(
+        canvas,
+        {
 
-                    data: points,
+            type: "line",
 
-                    borderColor: "#1565c0",
+            data: {
 
-                    tension: 0.45,
+                datasets: [
 
-                    pointRadius: 5,
+                    {
+                        label: "Tide",
 
-                    fill: false
-                },
+                        data: points,
 
-                {
-                    label: "Now",
+                        borderColor:
+                            "#1565c0",
 
-                    data: [
+                        backgroundColor:
+                            "rgba(21,101,192,0.1)",
 
-                        {
-                            x: new Date(),
-                            y: tide.currentLevel
-                        }
+                        tension: 0.45,
 
-                    ],
+                        pointRadius: 5,
 
-                    pointRadius: 7,
+                        borderWidth: 3,
 
-                    pointBackgroundColor:
-                        "black",
+                        fill: false
+                    },
 
-                    pointBorderColor:
-                        "black",
+                    {
+                        label: "Now",
 
-                    showLine: false
-                }
-            ]
-        },
+                        data: [
 
-        options: {
+                            {
+                                x: new Date(),
+                                y:
+                                    tide.currentLevel
+                            }
 
-            responsive: true,
+                        ],
 
-            maintainAspectRatio: false,
+                        pointRadius: 7,
 
-            plugins: {
+                        pointBackgroundColor:
+                            "black",
 
-                legend: {
-                    display: false
-                }
+                        pointBorderColor:
+                            "black",
+
+                        showLine: false
+                    }
+                ]
             },
 
-            scales: {
+            options: {
 
-                x: {
+                responsive: true,
 
-                    type: "time",
+                maintainAspectRatio:
+                    false,
 
-                    time: {
-                        unit: "hour"
+                plugins: {
+
+                    legend: {
+                        display: false
                     }
                 },
 
-                y: {
+                scales: {
 
-                    title: {
+                    x: {
 
-                        display: true,
+                        type: "time",
 
-                        text: "m ODM"
+                        time: {
+
+                            unit: "hour"
+                        }
+                    },
+
+                    y: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "m ODM"
+                        }
                     }
                 }
             }
         }
-    });
+    );
 }
