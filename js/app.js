@@ -69,6 +69,30 @@ async function refresh() {
         ).textContent =
             tide.nextLow;
 
+        document.getElementById(
+    "labelPrevLow"
+).textContent =
+    "Low: "
+    + tide.previousLow;
+
+document.getElementById(
+    "labelPrevHigh"
+).textContent =
+    "High: "
+    + tide.previousHigh;
+
+document.getElementById(
+    "labelNextHigh"
+).textContent =
+    "High: "
+    + tide.nextHigh;
+
+document.getElementById(
+    "labelNextLow"
+).textContent =
+    "Low: "
+    + tide.nextLow;
+
         // Tide chart
 
         drawTide(
