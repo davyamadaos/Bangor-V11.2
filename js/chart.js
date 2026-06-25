@@ -1,52 +1,65 @@
-let chart;
+let tideChart;
 
-export function draw(canvas, data) {
+export function drawTide(
+    canvas,
+    tide
+) {
 
-    if (!canvas) return;
-
-    if (!data.series) return;
-
-    if (chart) {
-        chart.destroy();
+    if (tideChart) {
+        tideChart.destroy();
     }
 
-    const river = data.series.map(p => ({
-        x: new Date(p.time),
-        y: p.level
-    }));
+    const points = [];
 
-    const now = new Date();
-
-    const forecast = [
-
-        {
-            x: now,
-            y: data.estimatedLevel
-        },
-
-        {
+    if (
+        tide.previousLowTime &&
+        tide.previousLowLevel != null
+    ) {
+        points.push({
             x: new Date(
-                now.getTime() + 3600000
+                tide.previousLowTime
             ),
-            y: data.forecast["1h"].level
-        },
+            y: tide.previousLowLevel
+        });
+    }
 
-        {
+    if (
+        tide.previousHighTime &&
+        tide.previousHighLevel != null
+    ) {
+        points.push({
             x: new Date(
-                now.getTime() + 10800000
+                tide.previousHighTime
             ),
-            y: data.forecast["3h"].level
-        },
+            y: tide.previousHighLevel
+        });
+    }
 
-        {
+    if (
+        tide.nextLowTime &&
+        tide.nextLowLevel != null
+    ) {
+        points.push({
             x: new Date(
-                now.getTime() + 21600000
+                tide.nextLowTime
             ),
-            y: data.forecast["6h"].level
-        }
-    ];
+            y: tide.nextLowLevel
+        });
+    }
 
-    chart = new Chart(canvas, {
+    if (
+        tide.nextHighTime &&
+        tide.nextHighLevel != null
+    ) {
+        points.push({
+            x: new Date(
+                tide.nextHighTime
+            ),
+            y: tide.nextHighLevel
+        });
+    }
+
+    tideChart = new Chart(canvas, {
 
         type: "line",
 
@@ -55,33 +68,40 @@ export function draw(canvas, data) {
             datasets: [
 
                 {
-                    label: "River",
+                    label: "Tide",
 
-                    data: river,
+                    data: points,
 
                     borderColor: "#1565c0",
 
-                    borderWidth: 2,
+                    tension: 0.45,
 
-                    pointRadius: 3,
+                    pointRadius: 5,
 
-                    tension: 0.3
+                    fill: false
                 },
 
                 {
-                    label: "Forecast",
+                    label: "Now",
 
-                    data: forecast,
+                    data: [
 
-                    borderColor: "#ff9800",
+                        {
+                            x: new Date(),
+                            y: tide.currentLevel
+                        }
 
-                    borderDash: [5,5],
+                    ],
 
-                    borderWidth: 2,
+                    pointRadius: 7,
 
-                    pointRadius: 3,
+                    pointBackgroundColor:
+                        "black",
 
-                    tension: 0.3
+                    pointBorderColor:
+                        "black",
+
+                    showLine: false
                 }
             ]
         },
@@ -92,16 +112,31 @@ export function draw(canvas, data) {
 
             maintainAspectRatio: false,
 
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+            },
+
             scales: {
 
                 x: {
-                    type: "time"
+
+                    type: "time",
+
+                    time: {
+                        unit: "hour"
+                    }
                 },
 
                 y: {
+
                     title: {
+
                         display: true,
-                        text: "Level (m)"
+
+                        text: "m ODM"
                     }
                 }
             }
