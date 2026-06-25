@@ -153,6 +153,7 @@ canvas {
     line-height: 1.4;
 }
 
+
 @media (max-width: 600px) {
 
     .big {
@@ -171,4 +172,36 @@ canvas {
     #tideChart {
         height: 200px !important;
     }
+    #tideChart {
+    width: 100% !important;
+    height: 260px !important;
+}
+
+.tideLabels {
+
+    margin-top: 15px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    font-size: 0.85rem;
+
+    color: #555;
+}
+
+.tideSource {
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    font-size: 0.75rem;
+
+    color: #777;
+
+    line-height: 1.4;
+}
 }
