@@ -1,14 +1,11 @@
-import { fmtLevel, fmtTime } from "./utils.js";
-import { trend } from "./trend.js";
+import { fmtLevel } from "./utils.js";
 import { toGauge } from "./config.js";
+import { trend } from "./trend.js";
+import { drawTide } from "./tideChart.js";
 
-export function render(data) {
-
-    const estimatedGauge =
-        toGauge(data.estimatedLevel);
-
-    const epaGauge =
-        toGauge(data.epaLevel);
+export function render(
+    data
+) {
 
     document.getElementById(
         "currentLevel"
@@ -21,7 +18,9 @@ export function render(data) {
         "currentGauge"
     ).textContent =
         "Gauge " +
-        estimatedGauge.toFixed(1);
+        toGauge(
+            data.estimatedLevel
+        ).toFixed(2);
 
     document.getElementById(
         "epaLevel"
@@ -34,13 +33,16 @@ export function render(data) {
         "epaGauge"
     ).textContent =
         "Gauge " +
-        epaGauge.toFixed(1);
+        toGauge(
+            data.epaLevel
+        ).toFixed(2);
 
     document.getElementById(
         "epaAge"
     ).textContent =
-        data.ageHours.toFixed(1)
-        + " h old";
+        data.ageHours.toFixed(
+            1
+        ) + " h old";
 
     const t =
         trend(data.rate);
@@ -56,64 +58,132 @@ export function render(data) {
     trendEl.className =
         t.class;
 
-    if (data.forecast) {
+    document.getElementById(
+        "f1Level"
+    ).textContent =
+        fmtLevel(
+            data.forecast[
+                "1h"
+            ].level
+        );
 
-        const f1 =
-            data.forecast["1h"]?.level ??
-            data.estimatedLevel;
+    document.getElementById(
+        "f1Gauge"
+    ).textContent =
+        "Gauge " +
+        toGauge(
+            data.forecast[
+                "1h"
+            ].level
+        ).toFixed(2);
 
-        const f3 =
-            data.forecast["3h"]?.level ??
-            data.estimatedLevel;
+    document.getElementById(
+        "f3Level"
+    ).textContent =
+        fmtLevel(
+            data.forecast[
+                "3h"
+            ].level
+        );
 
-        const f6 =
-            data.forecast["6h"]?.level ??
-            data.estimatedLevel;
+    document.getElementById(
+        "f3Gauge"
+    ).textContent =
+        "Gauge " +
+        toGauge(
+            data.forecast[
+                "3h"
+            ].level
+        ).toFixed(2);
 
-        document.getElementById(
-            "f1Level"
-        ).textContent =
-            fmtLevel(f1);
+    document.getElementById(
+        "f6Level"
+    ).textContent =
+        fmtLevel(
+            data.forecast[
+                "6h"
+            ].level
+        );
 
-        document.getElementById(
-            "f1Gauge"
-        ).textContent =
-            "Gauge " +
-            toGauge(f1)
-                .toFixed(1);
+    document.getElementById(
+        "f6Gauge"
+    ).textContent =
+        "Gauge " +
+        toGauge(
+            data.forecast[
+                "6h"
+            ].level
+        ).toFixed(2);
 
-        document.getElementById(
-            "f3Level"
-        ).textContent =
-            fmtLevel(f3);
-
-        document.getElementById(
-            "f3Gauge"
-        ).textContent =
-            "Gauge " +
-            toGauge(f3)
-                .toFixed(1);
-
-        document.getElementById(
-            "f6Level"
-        ).textContent =
-            fmtLevel(f6);
-
-        document.getElementById(
-            "f6Gauge"
-        ).textContent =
-            "Gauge " +
-            toGauge(f6)
-                .toFixed(1);
-    }
-
-    if (data.updated) {
+    if (
+        data.updated
+    ) {
 
         document.getElementById(
             "updatedTime"
         ).textContent =
-            fmtTime(
+            new Date(
                 data.updated
+            ).toLocaleString(
+                "en-IE"
             );
+    }
+
+    if (
+        data.tide
+    ) {
+
+        const tide =
+            data.tide;
+
+        const state =
+            document.getElementById(
+                "tideState"
+            );
+
+        state.textContent =
+            tide.state;
+
+        if (
+            tide.state.includes(
+                "Flood"
+            )
+        ) {
+
+            state.style.color =
+                "green";
+
+        } else {
+
+            state.style.color =
+                "red";
+        }
+
+        document.getElementById(
+            "prevLow"
+        ).textContent =
+            tide.previousLow;
+
+        document.getElementById(
+            "prevHigh"
+        ).textContent =
+            tide.previousHigh;
+
+        document.getElementById(
+            "nextHigh"
+        ).textContent =
+            tide.nextHigh;
+
+        document.getElementById(
+            "nextLow"
+        ).textContent =
+            tide.nextLow;
+
+        drawTide(
+            document.getElementById(
+                "tideChart"
+            ),
+            tide
+        );
     }
 }
