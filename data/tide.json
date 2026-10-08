@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-07T21:36:57.070Z",
-  "state": "▼ Ebb",
-  "currentLevel": -1.18,
-  "previousLow": "7 Oct, 12:00",
-  "previousLowTime": "2026-10-07T10:00:00.000Z",
-  "previousLowLevel": -0.831,
+  "updated": "2026-10-08T01:20:41.388Z",
+  "state": "▲ Flood",
+  "currentLevel": -0.44,
+  "previousLow": "8 Oct, 00:45",
+  "previousLowTime": "2026-10-07T22:45:00.000Z",
+  "previousLowLevel": -1.403,
   "previousHigh": "7 Oct, 18:15",
   "previousHighTime": "2026-10-07T16:15:00.000Z",
   "previousHighLevel": 1.515,
   "nextHigh": "8 Oct, 06:55",
   "nextHighTime": "2026-10-08T04:55:00.000Z",
   "nextHighLevel": 1.214,
-  "nextLow": "8 Oct, 00:45",
-  "nextLowTime": "2026-10-07T22:45:00.000Z",
-  "nextLowLevel": -1.403
+  "nextLow": "8 Oct, 12:45",
+  "nextLowTime": "2026-10-08T10:45:00.000Z",
+  "nextLowLevel": -1.064
 }
